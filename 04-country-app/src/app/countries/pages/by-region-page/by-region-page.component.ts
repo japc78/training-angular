@@ -25,9 +25,11 @@ export class ByRegionPageComponent implements OnInit {
   }
 
   onSearch(value: Region) :void{
-    console.log('Search by Region value:', value);
+    // console.log('Search by Region value:', value);
+    this.isLoading = true;
     this.countriesService.searchRegion(value).subscribe(countries => {
       this.countries = countries;
+      this.isLoading = false;
     });
   }
 

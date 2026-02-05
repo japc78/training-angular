@@ -21,9 +21,11 @@ export class ByCountryPageComponent implements OnInit {
   }
 
   onSearch(value: string) :void{
+    this.isLoading = true;
     console.log('Search by Country value:', value);
     this.countriesService.searchCountry(value).subscribe(countries => {
       this.countries = countries;
+      this.isLoading = false;
     });
   }
 }
