@@ -1,6 +1,6 @@
 import { Region } from './../interfaces/region.type';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { catchError, Observable, of, map, tap} from 'rxjs';
 import { Country } from '../interfaces/country';
 
@@ -12,7 +12,9 @@ const REST_COUNTRY_API: string = 'https://restcountries.com/v3.1';
   providedIn: 'root'
 })
 export class CountriesService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.loadLocalStorage();
+   }
 
   public cacheStorage: CacheStorage = {
     byCapital:    { term: '', countries: [] as Country[] },
@@ -25,7 +27,8 @@ export class CountriesService {
     return this.searchCountriesByUrl(url)
       .pipe(
         // Guardamos en el cacheStorage el resultado de la búsqueda por capital
-        tap( countries => this.cacheStorage.byCapital = { term: capital, countries })
+        tap( countries => this.cacheStorage.byCapital = { term: capital, countries }),
+        tap( () => this.saveLocalStorage() )
       );
   }
 
@@ -34,7 +37,8 @@ export class CountriesService {
     return this.searchCountriesByUrl(url)
       .pipe(
         // Guardamos en el cacheStorage el resultado de la búsqueda por país
-        tap( countries => this.cacheStorage.byCountries = { term: country, countries })
+        tap( countries => this.cacheStorage.byCountries = { term: country, countries }),
+        tap( () => this.saveLocalStorage() )
       );
   }
 
@@ -43,7 +47,8 @@ export class CountriesService {
     return this.searchCountriesByUrl(url)
       .pipe(
         // Guardamos en el cacheStorage el resultado de la búsqueda por región
-        tap( countries => this.cacheStorage.byRegion = { region, countries })
+        tap( countries => this.cacheStorage.byRegion = { region, countries }),
+        tap( () => this.saveLocalStorage() )
       );
   }
 
@@ -71,6 +76,15 @@ export class CountriesService {
           return of([]);
         })
       );
+  }
+
+  private saveLocalStorage() {
+    localStorage.setItem('cacheStorage', JSON.stringify(this.cacheStorage));
+  }
+
+  private loadLocalStorage() {
+    if (!localStorage.getItem('cacheStorage')) return;
+    this.cacheStorage = JSON.parse(localStorage.getItem('cacheStorage')!);
   }
 
 }
