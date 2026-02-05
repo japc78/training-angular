@@ -13,36 +13,17 @@ export class CountriesService {
 
   searchCapital(capital: string) : Observable<Country[]> {
     const url = `${REST_COUNTRY_API}/capital/${capital}`;
-    return this.http.get<Country[]>(url)
-      .pipe(
-        catchError(error =>  {
-          console.log(error);
-          return of([]);
-        })
-      );
+    return this.searchCountriesByUrl(url);
   }
-
 
   searchCountry(country: string) : Observable<Country[]> {
     const url = `${REST_COUNTRY_API}/name/${country}`;
-    return this.http.get<Country[]>(url)
-      .pipe(
-        catchError(error =>  {
-          console.log(error);
-          return of([]);
-        })
-      );
+    return this.searchCountriesByUrl(url);
   }
 
   searchRegion(region: string) : Observable<Country[]> {
     const url = `${REST_COUNTRY_API}/region/${region}`;
-    return this.http.get<Country[]>(url)
-      .pipe(
-        catchError(error =>  {
-          console.log(error);
-          return of([]);
-        })
-      );
+    return this.searchCountriesByUrl(url);
   }
 
   searchCountryByAlphaCode(alphaCode: string) : Observable<Country | null> {
@@ -58,4 +39,17 @@ export class CountriesService {
       );
 
   }
+
+  // Private method
+
+  private searchCountriesByUrl(url: string): Observable<Country[]> {
+    return this.http.get<Country[]>(url)
+      .pipe(
+        catchError(error => {
+          console.log(error);
+          return of([]);
+        })
+      );
+  }
+
 }
