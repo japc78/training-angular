@@ -12,14 +12,18 @@ import { CountriesService } from '../../services/countries.service';
 })
 export class ByCapitalPageComponent {
 
-  public countries : Country[] = [];
+  public countries: Country[] = [];
+  public isLoading: boolean = false;
 
   constructor(private countriesService: CountriesService) { }
 
   onSearch(value: string) :void{
+    this.isLoading = true;
+
     console.log('Search by Capital value:', value);
     this.countriesService.searchCapital(value).subscribe(countries => {
       this.countries = countries;
+      this.isLoading = false;
     });
   }
 }

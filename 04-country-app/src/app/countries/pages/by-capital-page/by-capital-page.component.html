@@ -1,11 +1,14 @@
 <h2>By capital</h2>
 <hr>
 
+<!-- explica, (onValue)="onSearch($event)" (onDebounce)="onSearch($event)" son dos eventos personalizados que se emiten desde el componente hijo (shared-search-box) hacia el componente padre (by-capital-page). -->
+
 <div class="row">
   <div class="col">
     <shared-search-box
       placeholder="Search by Capital"
       (onValue)="onSearch($event)"
+      (onDebounce)="onSearch($event)"
     ></shared-search-box>
   </div>
 </div>
@@ -18,7 +21,7 @@
         {{ country.name.common }} - {{country.population}}
       </li>
     </ul> -->
-
+    <shared-loading-spinner *ngIf="isLoading"></shared-loading-spinner>
     <country-table [countries]=countries></country-table>
   </div>
 </div>
