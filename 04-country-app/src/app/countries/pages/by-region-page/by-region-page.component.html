@@ -5,7 +5,7 @@
   <div class="col">
     <select class="form-select" (change)="onRegionChange($event)">
       <option value="">Select region</option>
-      <option *ngFor="let region of regions" [value]="region">{{region}}</option>
+      <option *ngFor="let region of regions" [value]="region" [selected]="region === initialValue">{{region}}</option>
     </select>
   </div>
 </div>
